@@ -3,23 +3,20 @@ from trapezemethod import count_integral_with_trapeze_method
 from simpsonmeth import count_integral_with_simpson_method
 
 
-# def apply_rungle_rule(funct,calc_funct,a,b,step,p):
-	# res1 = calc_funct(funct,a,b,step)
-	# res2 = calc_funct(funct,a,b,step/2)
+def apply_rungle_rule(funct,calc_funct,a,b,step,p):
+	res1 = calc_funct(funct,a,b,step)
+	res2 = calc_funct(funct,a,b,step/2)
 
-	# #o = ...
-	# result = res2 + (res2 - res1) / (2**p - 1)
-	# return result + 0
+	result = res2 + (res2 - res1) / (2**p - 1)
+	return result
 
-# def count_accuracy(funct,calc_funct,a,b,step,o):
-# 	res1 = calc_funct(funct,a,b,step*2)
-# 	res2 = calc_funct(funct,a,b,step)
-
-# 	return o * abs(res2 - res1)
 
 if __name__ == "__main__":
 	def my_function(x):
 		return (x**2) / (625 - x**4)
+
+	print(count_integral_with_simpson_method(my_function,0,4,0.5))
+	print(apply_rungle_rule(my_function,count_integral_with_simpson_method,0,4,0.5,4))
 
 	print("Integration results")
 	x0 = 0
@@ -33,6 +30,18 @@ if __name__ == "__main__":
 	print("Simpson method:   ",
 		count_integral_with_simpson_method(my_function,x0,xi,step))
 
+	print()
+	print("More accurate ones:")
+	print("Rectangle method: ",
+		apply_rungle_rule(my_function,count_integral_with_rectangle_method
+			              ,x0,xi,step,1))
+	print("Trapez method:    ",
+		apply_rungle_rule(my_function,count_integral_with_trapeze_method
+			              ,x0,xi,step,2))
+	print("Simpson method:   ",
+		apply_rungle_rule(my_function,count_integral_with_simpson_method
+			              ,x0,xi,step,4))
+
 	print("For step 0.5:")
 	step = 0.5
 	print("Rectangle method: ",
@@ -41,3 +50,16 @@ if __name__ == "__main__":
 		count_integral_with_trapeze_method(my_function,x0,xi,step))
 	print("Simpson method:   ",
 		count_integral_with_simpson_method(my_function,x0,xi,step))
+
+
+	print()
+	print("More accurate ones:")
+	print("Rectangle method: ",
+		apply_rungle_rule(my_function,count_integral_with_rectangle_method
+			              ,x0,xi,step,1))
+	print("Trapez method:    ",
+		apply_rungle_rule(my_function,count_integral_with_trapeze_method
+			              ,x0,xi,step,2))
+	print("Simpson method:   ",
+		apply_rungle_rule(my_function,count_integral_with_simpson_method
+			              ,x0,xi,step,4))
