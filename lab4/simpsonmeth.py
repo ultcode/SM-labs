@@ -1,11 +1,9 @@
-
 def funct(x):
     return ((x**2)/(625 - x**4))
 
 
-def calc(funct,a,b,step):
+def count_integral_with_simpson_method(funct,a,b,step):
   result = 0;
-  m = (a - b) / (step*2)
 
   x_left = a + step
   i_counter = 1;
@@ -23,7 +21,6 @@ def calc(funct,a,b,step):
     x_left += step
     i_counter += 1
 
-
   result += funct(a) + funct(b)
   result *= step/3
   return result
@@ -39,9 +36,6 @@ if __name__=="__main__":
     lastX = 4
 
 
-    print ("Результат з кроком 1:", calc(funct,m,b,step2))
+    print ("Результат з кроком 1:", count_integral_with_simpson_method(funct,m,b,step2))
 
-    print("Результат з кроком 0.5:", calc(funct,m,b,step1))
-
-
-
+    print("Результат з кроком 0.5:", count_integral_with_simpson_method(funct,m,b,step1))

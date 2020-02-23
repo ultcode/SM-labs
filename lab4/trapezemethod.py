@@ -2,7 +2,7 @@ def func(x):
     return x ** 2 / (625 - x ** 4)
 
 
-def summing(h, x0, xk):
+def count_integral_with_trapeze_method(func,x0,xk,h):
     iterations = (xk - x0) / h
     counter = 1
     storeX = x0
@@ -21,8 +21,8 @@ if __name__ == "__main__":
     b = 4
     stepForFirst = 1
     stepForSecond = 0.5
-    first = summing(stepForFirst, a, b).__round__(7)
-    second = summing(stepForSecond, a, b).__round__(7)
+    first = summing(funct, a, b,stepForFirst).__round__(7)
+    second = summing(funct, a, b,stepForSecond).__round__(7)
     print("First integral (step=1): " + str(first))
     print("Second integral (step=0.5): " + str(second))
     print("Runge (I(n) + (I(2n) - I(n)): " + str((second + (second - first)/3).__round__(7)))
