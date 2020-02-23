@@ -3,19 +3,19 @@ from trapezemethod import count_integral_with_trapeze_method
 from simpsonmeth import count_integral_with_simpson_method
 
 
-def apply_rungle_rule(funct,calc_funct,a,b,step,p):
-	res1 = calc_funct(funct,a,b,step)
-	res2 = calc_funct(funct,a,b,step/2)
+# def apply_rungle_rule(funct,calc_funct,a,b,step,p):
+	# res1 = calc_funct(funct,a,b,step)
+	# res2 = calc_funct(funct,a,b,step/2)
 
-	#o = ...
-	result = res2 + (res2 - res1) / (2**p - 1)
-	return result + 0
+	# #o = ...
+	# result = res2 + (res2 - res1) / (2**p - 1)
+	# return result + 0
 
-def count_accuracy(funct,calc_funct,a,b,step,o):
-	res1 = calc_funct(funct,a,b,step*2)
-	res2 = calc_funct(funct,a,b,step)
+# def count_accuracy(funct,calc_funct,a,b,step,o):
+# 	res1 = calc_funct(funct,a,b,step*2)
+# 	res2 = calc_funct(funct,a,b,step)
 
-	return o * abs(res2 - res1)
+# 	return o * abs(res2 - res1)
 
 if __name__ == "__main__":
 	def my_function(x):
