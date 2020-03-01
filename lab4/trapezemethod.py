@@ -1,22 +1,25 @@
-def func(x):
-    return x ** 2 / (625 - x ** 4)
-
-
 def count_integral_with_trapeze_method(func,x0,xk,h):
+    firstPart = (h/2) * (func(x0) + func(xk))
+
     iterations = (xk - x0) / h
     counter = 1
-    storeX = x0
+    xi = x0
     secondPart = 0
-    firstPart = h * (func(x0) + func(xk)) / 2
 
-    while counter != iterations - 1:
-        storeX += h
-        secondPart += h * func(storeX)
+    # было
+    # while counter != iterations - 1:
+    # должно быть
+    while counter <= iterations - 1:
+    # получалось на одну итерацию меньше
+        xi += h
+        secondPart += h * func(xi)
         counter += 1
     return firstPart + secondPart
 
 
 if __name__ == "__main__":
+    def func(x):
+        return x ** 2 / (625 - x ** 4)
     a = 0
     b = 4
     stepForFirst = 1

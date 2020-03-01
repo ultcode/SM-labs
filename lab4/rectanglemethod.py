@@ -1,4 +1,3 @@
-
 def count_integral_with_rectangle_method(funct,a,b,step_length):
 	xi = a;
 	result = 0;

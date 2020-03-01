@@ -15,8 +15,6 @@ if __name__ == "__main__":
 	def my_function(x):
 		return (x**2) / (625 - x**4)
 
-	print(count_integral_with_simpson_method(my_function,0,4,0.5))
-	print(apply_rungle_rule(my_function,count_integral_with_simpson_method,0,4,0.5,4))
 
 	print("Integration results")
 	x0 = 0
@@ -42,6 +40,7 @@ if __name__ == "__main__":
 		apply_rungle_rule(my_function,count_integral_with_simpson_method
 			              ,x0,xi,step,4))
 
+	print()
 	print("For step 0.5:")
 	step = 0.5
 	print("Rectangle method: ",
