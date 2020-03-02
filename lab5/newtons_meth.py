@@ -47,11 +47,14 @@ def recurs_gen_coef(funct,points):
 
 if __name__ == "__main__":
 	def function(x):
-		return math.asin(x)
+		return math.asin(x) + x
 
 	a = gen_newtons_polinom(function,[-0.4,-0.1,0.2,0.5])
+	b = gen_newtons_polinom(function,[-0.4,0,0.2,0.5])
+
 	for x in [-0.3,0,0.1,0.35]:
 		print(x)
 		print(a(x))
+		print(b(x))
 		print(function(x))
 		print()

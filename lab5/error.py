@@ -1,18 +1,18 @@
-import numpy as np
+import math
 
 
 def func(x):
-    return np.arcsin(x) + x
+    return math.asin(x) + x
 
 
-def funcLa(x, x0, x1, x2, x3):
-    return funcLa0(x, x0, x1, x2, x3) + funcLa1(x, x0, x1, x2, x3) + \
-           funcLa2(x, x0, x1, x2, x3) + funcLa3(x, x0, x1, x2, x3)
 
 
 def funcLa0(x, x0, x1, x2, x3):
     return func(x0) * (x - x1) * (x - x2) * (x - x3) / ((x0 - x1) * (x0 - x2) * (x0 - x3))
 
+def funcLa(x, x0, x1, x2, x3):
+    return funcLa0(x, x0, x1, x2, x3) + funcLa1(x, x0, x1, x2, x3) + \
+           funcLa2(x, x0, x1, x2, x3) + funcLa3(x, x0, x1, x2, x3)
 
 def funcLa1(x, x0, x1, x2, x3):
     return func(x1) * (x - x0) * (x - x2) * (x - x3) / ((x1 - x0) * (x1 - x2) * (x1 - x3))
@@ -46,5 +46,6 @@ if __name__ == "__main__":
     x3 = 0.5
     max_diff_4 = 14.36
     upper_margin_value = upper_margin_value(max_diff_4, x, x0, x1, x2, x3)
+    print(upper_margin_value)
     exact_error_value = exact_error_value(x, x0, x1, x2, x3)
     print(f"Верхня оцінка похибки більша у {comparision_errors(upper_margin_value, exact_error_value).__round__(3)} разів за абсолютну")
