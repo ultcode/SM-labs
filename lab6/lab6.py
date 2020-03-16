@@ -27,7 +27,7 @@ def count_q(matrix):
     b_coef = []
     b_coef.append((matrix[0][2])/(matrix[0][0]))
     b_coef.append((matrix[1][3]-matrix[1][0]*a_coef[0])/(matrix[1][1] + matrix[1][0]*a_coef[0]))
-    b_coef.append((matrix[2][2]-matrix[2][0]*b_coef[0])/(matrix[2][1] + matrix[2][0]*b_coef[0]))
+    b_coef.append((matrix[2][2]-matrix[2][0]*a_coef[1])/(matrix[2][1] + matrix[2][0]*a_coef[0]))
 
     q_container = []
     q_container.append(0)
@@ -77,6 +77,6 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt 
     fig,ax = plt.subplots()
     ax.plot([x*0.01 for x in range(-40,81,1)],
-        [interp_funct(x*0.01) for x in range(-40,81,1)],"ro",color="blue")
+        [interp_funct(x*0.01) for x in range(-40,81,1)],color="blue")
     ax.plot(x_val,y_val,"ro")
     plt.show()
