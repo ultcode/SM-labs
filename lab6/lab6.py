@@ -1,8 +1,7 @@
 import numpy as np
-def gen_slar(x_val,y_val, h):
-    if len(x_val) != len(y_val):
-        raise ValueError("Not same ammount of x and y")
 
+
+def gen_slar(x_val,y_val, h):
     matrix_results = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]]
     matrix_results[0][0] = 2*h/3
     matrix_results[1][1] = 2*h/3
@@ -60,8 +59,8 @@ def count_interp_value(q_container, x_val, y_val, x, h):
     return result
 
 def gen_interp_functions(x_val,y_val,h):
+    q = count_q(gen_slar(x_val,y_val,h))
     def function(x):
-        q = count_q(gen_slar(x_val,y_val,h))
         return count_interp_value(q,x_val,y_val,x,h)
 
     return function
@@ -74,3 +73,10 @@ if __name__ == "__main__":
     interp_funct = gen_interp_functions(x_val,y_val,h)
     for x in [0.1,-0.4,-0.1,0.2,0.5,0.8]:
         print(interp_funct(x))
+
+    import matplotlib.pyplot as plt 
+    fig,ax = plt.subplots()
+    ax.plot([x*0.01 for x in range(-40,81,1)],
+        [interp_funct(x*0.01) for x in range(-40,81,1)],"ro",color="blue")
+    ax.plot(x_val,y_val,"ro")
+    plt.show()
