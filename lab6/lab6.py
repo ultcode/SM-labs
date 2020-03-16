@@ -26,14 +26,15 @@ def count_q(matrix):
 
     b_coef = []
     b_coef.append((matrix[0][2])/(matrix[0][0]))
-    b_coef.append((matrix[1][3]-matrix[1][0]*a_coef[0])/(matrix[1][1] + matrix[1][0]*a_coef[0]))
-    b_coef.append((matrix[2][2]-matrix[2][0]*a_coef[1])/(matrix[2][1] + matrix[2][0]*a_coef[0]))
-
+    b_coef.append((matrix[1][3] - matrix[1][0]*a_coef[0]) /
+                  (matrix[1][1] + matrix[1][0]*a_coef[0]))
+    b_coef.append((matrix[2][2] - matrix[2][0]*a_coef[1]) / 
+                  (matrix[2][1] + matrix[2][0]*a_coef[0]))
     q_container = []
     q_container.append(0)
     q_container.append(a_coef[2] + b_coef[2])
     q_container.append(a_coef[1]*q_container[1] + b_coef[1])
-    q_container.append(a_coef[1]*q_container[2] + a_coef[1])
+    q_container.append(a_coef[0]*q_container[2] + b_coef[0])
     q_container.append(0)
 
     return q_container
