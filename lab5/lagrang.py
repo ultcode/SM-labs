@@ -15,7 +15,6 @@ def GetValue(X, Y, x):
 
     return y
 
-
 def get_lagrange_result(function,points,x_to_calc):
     y = []
     for xi in points:

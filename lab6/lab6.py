@@ -1,5 +1,5 @@
 import numpy as np
-def SlarGen(x_val,y_val, h):
+def gen_slar(x_val,y_val, h):
     if len(x_val) != len(y_val):
         raise ValueError("Not same ammount of x and y")
 
@@ -19,48 +19,58 @@ def SlarGen(x_val,y_val, h):
     matrix_results[2][2] = d3
     return matrix_results
 
-def SlarCalc(s_values):
-    AB_coef = []
-    AB_coef.append(-s_values[0][1]/s_values[0][0])
-    AB_coef.append(-s_values[1][2]/(s_values[1][1] + s_values[1][0]*AB_coef[0]))
-    AB_coef.append(0)
+def count_q(matrix):
+    a_coef = []
+    a_coef.append(-matrix[0][1]/matrix[0][0])
+    a_coef.append(-matrix[1][2]/(matrix[1][1] + matrix[1][0]*a_coef[0]))
+    a_coef.append(0)
 
-    AB_coef.append((s_values[0][2])/(s_values[0][0]))
-    AB_coef.append((s_values[1][3]-s_values[1][0]*AB_coef[0])/(s_values[1][1] + s_values[1][0]*AB_coef[0]))
-    AB_coef.append((s_values[2][2]-s_values[2][0]*AB_coef[1])/(s_values[2][1] + s_values[2][0]*AB_coef[1]))
+    b_coef = []
+    b_coef.append((matrix[0][2])/(matrix[0][0]))
+    b_coef.append((matrix[1][3]-matrix[1][0]*a_coef[0])/(matrix[1][1] + matrix[1][0]*a_coef[0]))
+    b_coef.append((matrix[2][2]-matrix[2][0]*b_coef[0])/(matrix[2][1] + matrix[2][0]*b_coef[0]))
 
     q_container = []
     q_container.append(0)
-    q_container.append(AB_coef[2] + AB_coef[5])
-    q_container.append(AB_coef[1]*q_container[1] + AB_coef[4])
-    q_container.append(AB_coef[0]*q_container[2] + AB_coef[3])
+    q_container.append(a_coef[2] + b_coef[2])
+    q_container.append(a_coef[1]*q_container[1] + b_coef[1])
+    q_container.append(a_coef[1]*q_container[2] + a_coef[1])
     q_container.append(0)
 
     return q_container
 
-def SplainBuilder(q_container, x_val, y_val, x, h):
-    s1 =  (q_container[0]/6*h * (x_val[1] - x)**3)  + (q_container[1]/(6*h) * (x - x_val[0])**3) + ((y_val[0]/h - q_container[0]/6 * h) * (x_val[1] - x)) + ((y_val[1]/h - q_container[1]* h/6)*(x - x_val[0]))
-    s2 =  (q_container[1]/6*h * (x_val[2] - x)**3)  + (q_container[2]/(6*h) * (x - x_val[1])**3) + ((y_val[1]/h - q_container[1]/6 * h) * (x_val[2] - x)) + ((y_val[2]/h - q_container[2]* h/6)*(x - x_val[1]))
-    s3 =  (q_container[2]/6*h * (x_val[3] - x)**3)  + (q_container[3]/(6*h) * (x - x_val[2])**3) + ((y_val[2]/h - q_container[2]/6 * h) * (x_val[3] - x)) + ((y_val[3]/h - q_container[3]* h/6)*(x - x_val[2]))
-    s4 =  (q_container[3]/6*h * (x_val[4] - x)**3)  + (q_container[4]/(6*h) * (x - x_val[3])**3) + ((y_val[3]/h - q_container[3]/6 * h) * (x_val[4] - x)) + ((y_val[4]/h - q_container[4]* h/6)*(x - x_val[3]))
-
+def count_interp_value(q_container, x_val, y_val, x, h):
     if (x >= x_val[0] and x <= x_val[1]):
-        return s1
+        segment_number = 0
     elif (x >= x_val[1] and x <= x_val[2]):
-        return s2
+        segment_number = 1
     elif (x >= x_val[2] and x <= x_val[3]):
-        return s3
+        segment_number = 2
     elif (x >= x_val[3] and x <= x_val[4]):
-        return s4
+        segment_number = 3
     else:
         raise ValueError("x not in range of interpolation")
+
+    i = segment_number
+    result = (q_container[i]/6*h * (x_val[i+1] - x)**3)  + \
+             (q_container[i+1]/(6*h) * (x - x_val[i])**3) + \
+             ((y_val[i]/h - q_container[i]/6 * h) * (x_val[i+1] - x)) + \
+             ((y_val[i+1]/h - q_container[i+1]* h/6)*(x - x_val[i]))
+
+    return result
+
+def gen_interp_functions(x_val,y_val,h):
+    def function(x):
+        q = count_q(gen_slar(x_val,y_val,h))
+        return count_interp_value(q,x_val,y_val,x,h)
+
+    return function
+
+
 if __name__ == "__main__":
     x_val = [-0.4,-0.1,0.2,0.5,0.8]
     y_val = [-0.81152,-0.20017,0.40136,1.0236,1.7273]
-    q_container = SlarCalc(SlarGen(x_val, y_val, 0.3))
-    print(SplainBuilder(q_container, x_val, y_val, 0.1, 0.3))
-    print(SplainBuilder(q_container, x_val, y_val, -0.4, 0.3))
-    print(SplainBuilder(q_container, x_val, y_val, -0.1, 0.3))
-    print(SplainBuilder(q_container, x_val, y_val, 0.2, 0.3))
-    print(SplainBuilder(q_container, x_val, y_val, 0.5, 0.3))
-    print(SplainBuilder(q_container, x_val, y_val, 0.8, 0.3))
+    h = 0.3
+    interp_funct = gen_interp_functions(x_val,y_val,h)
+    for x in [0.1,-0.4,-0.1,0.2,0.5,0.8]:
+        print(interp_funct(x))
