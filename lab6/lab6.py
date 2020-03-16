@@ -59,8 +59,8 @@ if __name__ == "__main__":
     y_val = [-0.81152,-0.20017,0.40136,1.0236,1.7273]
     q_container = SlarCalc(SlarGen(x_val, y_val, 0.3))
     print(SplainBuilder(q_container, x_val, y_val, 0.1, 0.3))
-    print(SplainBuilder(q_container, x_val, y_val, 0.1, -0.4))
-    print(SplainBuilder(q_container, x_val, y_val, 0.1, -0.1))
-    print(SplainBuilder(q_container, x_val, y_val, 0.1, 0.2))
-    print(SplainBuilder(q_container, x_val, y_val, 0.1, 0.5))
-    print(SplainBuilder(q_container, x_val, y_val, 0.1, 0.8))
+    print(SplainBuilder(q_container, x_val, y_val, -0.4, 0.3))
+    print(SplainBuilder(q_container, x_val, y_val, -0.1, 0.3))
+    print(SplainBuilder(q_container, x_val, y_val, 0.2, 0.3))
+    print(SplainBuilder(q_container, x_val, y_val, 0.5, 0.3))
+    print(SplainBuilder(q_container, x_val, y_val, 0.8, 0.3))
