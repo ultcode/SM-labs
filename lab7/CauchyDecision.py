@@ -1,16 +1,6 @@
 import math as m
 
 
-def exact_decision(x):
-    # return (m.cos(2) - m.sin(2)) * m.cos(2 * x) + (m.sin(2) + m.cos(2)) * m.sin(2 * x)
-    return -x**3 + 3*x + 1
-
-
-def count_function_g(x, y, z):
-    # return (z - 2 * y) / x
-    return 2*x*z/(x**2 + 1)
-
-
 def accuracy_control(k1, k2, k3, lim_down, lim_up, step):
     if lim_down > abs((k2 - k3) / (k1 - k2)) or lim_down > abs((k2 - k3) / (k1 - k2)):
         return step + step / 1000
@@ -19,48 +9,85 @@ def accuracy_control(k1, k2, k3, lim_down, lim_up, step):
     return step
 
 
-def main_func(step_x, x_start, x_end):
-    step = step_x
-    counter = 0
+def main_func(step, x_start, x_end,y,z,g,exact_design):
 
     x = x_start
-    y = 1
-    z = 3
 
-    accuracy_down = 0.01
-    accuracy_up = 0.1
+    # # x_vals = [i/10 for i in range(10,21)]
+    # x_vals = [i/10 for i in range(0,11,2)]
+    # my_vals = []
+    # exact_vals = []
 
+
+    counter = 0
     while x <= x_end:
+
+        # !!!
+        # my_vals.append(y)
+        # exact_vals.append(exact_design(x))
+
         K1 = step * z
-        L1 = step * count_function_g(x, y, z)
+        L1 = step * g(x, y, z)
 
         K2 = step * (z + L1 / 2)
-        L2 = step * count_function_g(x + step / 2, y + K1 / 2, z + L1 / 2)
+        L2 = step * g(x + step / 2, y + K1 / 2, z + L1 / 2)
 
         K3 = step * (z + L2 / 2)
-        L3 = step * count_function_g(x + step / 2, y + K2 / 2, z + L2 / 2)
+        L3 = step * g(x + step / 2, y + K2 / 2, z + L2 / 2)
 
         K4 = step * (z + L3)
-        L4 = step * count_function_g(x + step, y + K3, z + L3)
+        L4 = step * g(x + step, y + K3, z + L3)
 
-        print(f"k={counter}; " + f"x={x.__round__(1)}; " + f"y={y.__round__(7)}; " + f"z={z.__round__(4)}; " +
-              f"▲y={((K1 + 2 * K2 + 2 * K3 + K4) / 6).__round__(7)}; " +
-              f"▲z={((L1 + 2 * L2 + 2 * L3 + L4) / 6).__round__(7)}; " +
-              f"exact={exact_decision(x).__round__(7)}; " + f"error={abs(exact_decision(x) - y).__round__(7)};" +
+        delta_y = (K1 + 2 * K2 + 2 * K3 + K4) / 6
+        delta_z = (L1 + 2 * L2 + 2 * L3 + L4) / 6
+
+
+        print(f"k={counter}; x={x.__round__(1)}; y={y.__round__(7)}; z={z.__round__(4)}; " +
+              f"▲y={delta_y.__round__(7)}; ▲z={delta_z.__round__(7)}; " +
+              f"exact={exact_design(x).__round__(7)}; " + 
+              f"error={abs(exact_design(x) - y).__round__(7)}; " +
               f"test:{(z - x * y) / 2}")
 
-        # step = accuracy_control(K1, K2, K3, accuracy_down, accuracy_up, step)
-        # step = accuracy_control(L1, L2, L3, accuracy_down, accuracy_up, step)
 
         x += step
-        y += (K1 + 2 * K2 + 2 * K3 + K4) / 6
-        z += (L1 + 2 * L2 + 2 * L3 + L4) / 6
-
+        y += delta_y
+        z += delta_z
         counter += 1
+
+    # import matplotlib.pyplot as plt
+    # fig,ax = plt.subplots()
+    # print(my_vals)
+    # ax.plot(x_vals,my_vals,"ro",color="blue")
+    # ax.plot(x_vals,exact_vals,"ro")
+    # plt.show()
+
+
 
 
 if __name__ == "__main__":
-    h = 0.2
-    x_left = 0
-    x_right = 1
-    main_func(h, x_left, x_right)
+    def exact_design(x):
+        return (m.cos(2) - m.sin(2)) * m.cos(2 * x) + (m.sin(2) + m.cos(2)) * m.sin(2 * x)
+
+    def g(x, y, z):
+        return 1
+
+    h = 0.1
+    x_left = 1
+    x_right = 2
+    y = 1
+    z = 1
+    main_func(h, x_left, x_right,y,z,g,exact_design)
+
+
+    def exact_design1(x):
+        return -x**3 + 3*x + 1
+
+    def g1(x,y,z):
+        return (2*x*z)/(x**2 + 1)
+
+    y1 = 1
+    z1 = 3
+    x_left1 = 0
+    x_right1 = 1
+    h1 = 0.2
+    main_func(h1,x_left1,x_right1,y1,z1,g1,exact_design1)
