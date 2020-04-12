@@ -20,6 +20,7 @@ def _make_column_zero(matrix,column_number):
 	if leading_line[column_number] == 0:
 		for i in range(column_number,len(matrix)):
 			if matrix[i][column_number] != 0:
+				leading_line = matrix[i]
 				_swap_lines(matrix,column_number,i)
 				break
 		else:
@@ -77,6 +78,55 @@ def count_determinate(matrix):
 		result *= matrix[i][i]
 	return result
 
+def invert_matrix(matrix):
+	# matrix check??
+
+	#creating identiti matrix
+	result_matrix = [[0 for i in range(len(matrix))] for j in range(len(matrix))]
+	for i in range(len(matrix)):
+		result_matrix[i][i] = 1
+
+	for column_number in range(len(matrix)):
+
+		leading_line = matrix[column_number]
+		leading_line1 = result_matrix[column_number]
+		if leading_line[column_number] == 0:
+			for i in range(column_number,len(matrix)):
+				if matrix[i][column_number] != 0:
+					leading_line = matrix[i]
+					leading_line1 = result_matrix[i]
+					_swap_lines(matrix,column_number,i)
+					_swap_lines(result_matrix,column_number,i)
+					break
+			
+
+		for i in range(column_number + 1,len(matrix)):
+			coefficient = -1 * matrix[i][column_number] / leading_line[column_number]  
+			for j in range(len(matrix[i])):
+				matrix[i][j] += leading_line[j] * coefficient
+
+				result_matrix[i][j] += leading_line1[j] * coefficient
+
+
+	for column_number in range(len(matrix) - 1,-1,-1):
+		leading_line = matrix[column_number]
+		leading_line1 = result_matrix[column_number]
+
+		for i in range(column_number - 1,-1,-1):
+			coefficient = -1 * matrix[i][column_number] / leading_line[column_number]
+			for j in range(len(matrix)):
+				matrix[i][j] += leading_line[j] * coefficient
+				result_matrix[i][j] += leading_line1[j] * coefficient
+
+
+
+	for i in range(len(matrix)):
+		coefficient = 1/ matrix[i][i]
+		matrix[i] = [el * coefficient for el in matrix[i]]
+		result_matrix[i] = [el * coefficient for el in result_matrix[i]]
+
+	return result_matrix
+
 
 
 if __name__ == "__main__":
@@ -91,7 +141,10 @@ if __name__ == "__main__":
 	                  [5,-9,-2,8,103]]
 
 	from fractions import Fraction
+	system_matrix = [list(map(Fraction,line)) for line in system_matrix]
 	system_matrix1 = [list(map(Fraction,line)) for line in system_matrix1]
+
+	for x in invert_matrix([x[:-1] for x in system_matrix]):print([float(i) for i in x]) 
 
 	print([float(x) for x in solve_system(system_matrix1)])
 	print(count_determinate(system_matrix1))
